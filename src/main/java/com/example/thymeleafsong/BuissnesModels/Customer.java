@@ -4,7 +4,7 @@ public class Customer {
     private int customerID;
     private String firstName;
     private String lastName;
-    private String county;
+    private String country;
     private String postCode;
     private String phone;
     private String email;
@@ -15,11 +15,11 @@ public class Customer {
 
 
 
-    public Customer(int customerID, String firstName, String lastName, String county, String postCode, String phone, String email) {
+    public Customer(int customerID, String firstName, String lastName, String country, String postCode, String phone, String email) {
         this.customerID = customerID;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.county = county;
+        this.country = country;
         this.postCode = postCode;
         this.phone = phone;
         this.email = email;
@@ -53,12 +53,12 @@ public class Customer {
         this.lastName = lastName;
     }
 
-    public String getCounty() {
-        return county;
+    public String getCountry() {
+        return country;
     }
 
-    public void setCounty(String county) {
-        this.county = county;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getPostCode() {
@@ -93,7 +93,7 @@ public class Customer {
                 "customerID='" + customerID + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", county='" + county + '\'' +
+                ", country='" + country + '\'' +
                 ", postCode='" + postCode + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +

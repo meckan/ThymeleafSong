@@ -45,7 +45,7 @@ public class CustomerDBHandler {
     private void setStatement(PreparedStatement pS, Customer customer) throws SQLException {
         pS.setString(1, customer.getFirstName());
         pS.setString(2, customer.getLastName());
-        pS.setString(3, customer.getCounty());
+        pS.setString(3, customer.getCountry());
         pS.setString(4, customer.getPostCode());
         pS.setString(5, customer.getPhone());
         pS.setString(6, customer.getEmail());
