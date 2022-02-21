@@ -57,7 +57,8 @@ public class CustomerDBHandler {
         Connection conn = getConn();
         List<String> returnList = new ArrayList<>();
         try {
-            PreparedStatement pS = conn.prepareStatement("SELECT Country, COUNT(*) AS Total FROM Customer GROUP BY Country ORDER BY Total DESC");
+            PreparedStatement pS = conn.prepareStatement(
+                    "SELECT Country, COUNT(*) AS Total FROM Customer GROUP BY Country ORDER BY Total DESC");
             ResultSet resultSet = pS.executeQuery();
             while (resultSet.next()) {
                 returnList.add(resultSet.getString("Country") + ": " + resultSet.getString("Total"));
@@ -72,8 +73,8 @@ public class CustomerDBHandler {
         Connection conn = getConn();
         List<CustomerSpender> customerList = new ArrayList<>();
         try {
-            PreparedStatement pS = conn.prepareStatement("SELECT Customer.CustomerId,FirstName,LastName,Country,PostalCode,Phone,Email,SUM(Total) FROM Customer\n" +
-                    "INNER JOIN Invoice I ON Customer.CustomerId = I.CustomerId GROUP BY Customer.CustomerId ORDER BY Total DESC");
+            PreparedStatement pS = conn.prepareStatement("SELECT Customer.CustomerId,FirstName,LastName,Country,PostalCode,Phone,Email,SUM(Total) as Total FROM Customer\n" +
+                    "    INNER JOIN Invoice I ON Customer.CustomerId = I.CustomerId GROUP BY Customer.CustomerId ORDER BY Total DESC;");
             ResultSet resultSet = pS.executeQuery();
             while (resultSet.next()) {
 
@@ -143,6 +144,5 @@ public class CustomerDBHandler {
         }
         return null;
     }
-
 
 }
