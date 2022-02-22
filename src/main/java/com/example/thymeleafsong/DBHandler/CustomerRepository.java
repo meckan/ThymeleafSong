@@ -12,6 +12,15 @@ import java.util.List;
 
 @Repository
 public interface CustomerRepository {
+
+    List<Customer> getAllCustomers();
+
+    Customer getCustomer(int id);
+
+    List<Customer> getCustomers(int limit,int offset);
+
+    Customer getCustomer(String firstName, String lastName);
+
     Boolean addNewCustomer(Customer customer);
 
     Customer updateExistingCustomer(Customer customer);
