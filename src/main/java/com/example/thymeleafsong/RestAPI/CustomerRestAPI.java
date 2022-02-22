@@ -1,8 +1,8 @@
 package com.example.thymeleafsong.RestAPI;
 
 import com.example.thymeleafsong.Controller.CustomerController;
-import com.example.thymeleafsong.DBHandler.CustomerDBHandler;
 import com.example.thymeleafsong.DTO.CustomerDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,38 +20,35 @@ public class CustomerRestAPI {
        means the genre that corresponds to the most tracks from invoices associated to that customer.
      */
 
-    @GetMapping("/")
-    public String test() {
-        return "Hello";
+    private final CustomerController controller;
+
+    public CustomerRestAPI(@Autowired CustomerController controller){
+        this.controller = controller;
     }
+
 
     @PostMapping("/addCustomer")
     public boolean addCustomer(@RequestBody CustomerDTO dto) {
-        CustomerController controller = new CustomerController();
         return controller.addNewCustomer(dto);
     }
 
     @PutMapping("/updateCustomer")
     private CustomerDTO updateCustomer(@RequestBody CustomerDTO dto) {
-        CustomerController controller = new CustomerController();
         return  controller.updateCustomer(dto);
     }
 
     @GetMapping("/getCustomerByContry")
     public List<String> getCustomersByCountry() {
-        CustomerController controller = new CustomerController();
         return controller.getNrCustomersByCountry();
     }
 
     @GetMapping("/getCustomersFavGenre/{customerId}")
     public CustomerDTO getCstomersFavGenre(@PathVariable int customerId) {
-        CustomerController controller = new CustomerController();
         return controller.getCustomerFavGenre(customerId);
     }
 
     @GetMapping("/getBiggestSpenders")
     public List<CustomerDTO> getBiggestSpenders() {
-        CustomerController controller = new CustomerController();
         return controller.getBiggestSpenders();
     }
 

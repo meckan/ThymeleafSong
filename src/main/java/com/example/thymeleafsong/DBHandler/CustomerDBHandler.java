@@ -3,14 +3,17 @@ package com.example.thymeleafsong.DBHandler;
 import com.example.thymeleafsong.BuissnesModels.Customer;
 import com.example.thymeleafsong.BuissnesModels.CustomerGenre;
 import com.example.thymeleafsong.BuissnesModels.CustomerSpender;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerDBHandler {
 
+@Service
+public class CustomerDBHandler implements CustomerRepository {
 
+    @Override
     public Boolean addNewCustomer(Customer customer) {
         Connection conn = getConn();
         int result = 0;
@@ -27,6 +30,7 @@ public class CustomerDBHandler {
         return result == 1;
     }
 
+    @Override
     public Customer updateExistingCustomer(Customer customer) {
         Connection conn = getConn();
         try {
@@ -59,6 +63,7 @@ public class CustomerDBHandler {
         pS.setString(6, customer.getEmail());
     }
 
+    @Override
     public List<String> getNrCustomersByCountry() {
         Connection conn = getConn();
         List<String> returnList = new ArrayList<>();
@@ -76,6 +81,7 @@ public class CustomerDBHandler {
         return returnList;
     }
 
+    @Override
     public List<CustomerSpender> getBiggestCustomersSpenders() {
         Connection conn = getConn();
         List<CustomerSpender> customerList = new ArrayList<>();
@@ -111,6 +117,7 @@ public class CustomerDBHandler {
      *
      * @return
      */
+    @Override
     public CustomerGenre getCustomersFavoriteGenre(int customerId) {
         Connection conn = getConn();
         try {
@@ -154,10 +161,10 @@ public class CustomerDBHandler {
         return null;
     }
 
-    private void closeConn(Connection conn){
+    private void closeConn(Connection conn) {
         try {
             conn.close();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
 //            System.err.println("");
         }
