@@ -5,6 +5,7 @@ import com.example.thymeleafsong.BuissnesModels.Customer;
 import com.example.thymeleafsong.BuissnesModels.CustomerGenre;
 import com.example.thymeleafsong.BuissnesModels.CustomerSpender;
 import com.example.thymeleafsong.DBHandler.CustomerDBHandler;
+import com.example.thymeleafsong.DBHandler.CustomerService;
 import com.example.thymeleafsong.DTO.CustomerDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -78,8 +79,11 @@ public class CustomerController {
     }
 
     @GetMapping("/home")
-    public String showMessage(Model model){
-        model.addAttribute("message","Hello World");
+    public String getRandomMusicData(Model model){
+        CustomerService service = new CustomerService();
+        model.addAttribute("randomSongs",service.getRandomSongs(5));
+        model.addAttribute("randomArtists",service.getRandomArtists(5));
+        model.addAttribute("randomGenres",service.getRandomGenres(5));
         return "home";
     }
 }
