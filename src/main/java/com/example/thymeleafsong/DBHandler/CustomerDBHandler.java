@@ -122,11 +122,11 @@ public class CustomerDBHandler implements CustomerRepository {
         Connection conn = getConn();
         try {
             PreparedStatement pS = conn.prepareStatement(
-                    "SELECT Customer.CustomerId  ,FirstName,LastName,Country,PostalCode,Phone,Email,G.Name" +
-                            "FROM Customer INNER JOIN Invoice I on Customer.CustomerId = I.CustomerId" +
-                            "              INNER JOIN InvoiceLine IL on I.InvoiceId = IL.InvoiceId" +
-                            "              INNER JOIN Track T on T.TrackId = IL.TrackId" +
-                            "              INNER JOIN Genre G on G.GenreId = T.GenreId " +
+                    "SELECT  Customer.CustomerId  ,FirstName,LastName,Country,PostalCode,Phone,Email,G.Name " +
+                            "FROM Customer INNER JOIN Invoice I on Customer.CustomerId = I.CustomerId " +
+                            "INNER JOIN InvoiceLine IL on I.InvoiceId = IL.InvoiceId " +
+                            "INNER JOIN Track T on T.TrackId = IL.TrackId " +
+                            "INNER JOIN Genre G on G.GenreId = T.GenreId " +
                             "WHERE Customer.CustomerId = ? GROUP BY G.GenreId ORDER BY COUNT(G.GenreId) DESC LIMIT 1");
             pS.setInt(1, customerId);
             ResultSet resultSet = pS.executeQuery();
