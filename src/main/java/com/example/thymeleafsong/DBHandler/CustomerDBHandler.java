@@ -30,14 +30,13 @@ public class CustomerDBHandler {
     public Customer updateExistingCustomer(Customer customer) {
         Connection conn = getConn();
         try {
-            PreparedStatement pS = conn.prepareStatement("UPDATE Customer SET FirstName=?,LastName=?,Country=?,PostalCode=?,Phone=?,Email=? WHERE CustomerId ==?");
+            PreparedStatement pS = conn.prepareStatement("UPDATE Customer SET FirstName=?,LastName=?,Country=?,PostalCode=?,Phone=?,Email=? WHERE CustomerId =?");
             setStatement(pS, customer);
             pS.setInt(7, customer.getCustomerId());
+            pS.executeUpdate();
             pS = conn.prepareStatement("SELECT CustomerId  ,FirstName,LastName,Country,PostalCode,Phone,Email FROM Customer WHERE CustomerId = ?");
             pS.setInt(1, customer.getCustomerId());
-
             ResultSet resultSet = pS.executeQuery();
-
             return new Customer(resultSet.getInt(1),
                     resultSet.getString(2), resultSet.getString(3),
                     resultSet.getString(4), resultSet.getString(5),
