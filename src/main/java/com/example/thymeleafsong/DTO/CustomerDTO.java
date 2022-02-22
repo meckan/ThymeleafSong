@@ -2,7 +2,7 @@ package com.example.thymeleafsong.DTO;
 
 public class CustomerDTO {
 
-    private int customerID;
+    private int customerId;
     private String firstName;
     private String lastName;
     private String county;
@@ -17,8 +17,8 @@ public class CustomerDTO {
     public CustomerDTO() {
     }
 
-    public CustomerDTO(int customerID, String firstName, String lastName, String county, String postCode, String phone, String email, String favoriteGenre, double total) {
-        this.customerID = customerID;
+    public CustomerDTO(int customerId, String firstName, String lastName, String county, String postCode, String phone, String email, String favoriteGenre, double total) {
+        this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.county = county;
@@ -31,12 +31,12 @@ public class CustomerDTO {
 
     //region gettersSetter
 
-    public int getCustomerID() {
-        return customerID;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     public String getFirstName() {
@@ -108,7 +108,7 @@ public class CustomerDTO {
     @Override
     public String toString() {
         return "CustomerDTO{" +
-                "customerID=" + customerID +
+                "customerID=" + customerId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", county='" + county + '\'' +

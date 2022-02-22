@@ -15,11 +15,21 @@ import java.util.List;
 public class CustomerController {
 
 
+
+    public boolean addNewCustomer(CustomerDTO dto){
+        CustomerDBHandler dbHandler = new CustomerDBHandler();
+        return dbHandler.addNewCustomer(convertToCustomer(dto));
+    }
+
+    public CustomerDTO updateCustomer(CustomerDTO dto){
+        CustomerDBHandler dbHandler = new CustomerDBHandler();
+        return convertToDTO(dbHandler.updateExistingCustomer(convertToCustomer(dto)));
+    }
+
     public List<String> getNrCustomersByCountry(){
         CustomerDBHandler dbHandler = new CustomerDBHandler();
         return dbHandler.getNrCustomersByCountry();
     }
-
 
     public CustomerDTO getCustomerFavGenre(int customerId) {
         CustomerDBHandler dbHandler = new CustomerDBHandler();
@@ -36,10 +46,9 @@ public class CustomerController {
         return dtoList;
     }
 
-
     private CustomerDTO convertToDTO(Customer customer) {
         CustomerDTO dto = new CustomerDTO();
-        dto.setCustomerID(customer.getCustomerID());
+        dto.setCustomerId(customer.getCustomerId());
         dto.setFirstName(customer.getFirstName());
         dto.setLastName(customer.getLastName());
         dto.setCounty(customer.getCounty());
@@ -52,6 +61,18 @@ public class CustomerController {
             dto.setTotal(((CustomerSpender) customer).getTotal());
 
         return dto;
+    }
+
+    private Customer convertToCustomer(CustomerDTO dto){
+        Customer customer = new Customer();
+        customer.setCustomerId(dto.getCustomerId());
+        customer.setFirstName(dto.getFirstName());
+        customer.setLastName(dto.getLastName());
+        customer.setCounty(dto.getCounty());
+        customer.setPostCode(dto.getPostCode());
+        customer.setPhone(dto.getPhone());
+        customer.setEmail(dto.getEmail());
+        return customer;
     }
 
 }

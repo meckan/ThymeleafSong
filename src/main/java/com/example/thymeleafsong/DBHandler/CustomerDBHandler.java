@@ -10,36 +10,45 @@ import java.util.List;
 
 public class CustomerDBHandler {
 
-    private String dbURL = "jdbc:sqlite:src\\main\\resources\\Chinook_Sqlite.sqlite";
-
 
     public Boolean addNewCustomer(Customer customer) {
         Connection conn = getConn();
         int result = 0;
         try {
             PreparedStatement pS = conn.prepareStatement("INSERT INTO Customer (FirstName,LastName,Country,PostalCode,Phone,Email) VALUES (?,?,?,?,?,?)");
-
             setStatement(pS, customer);
 
             result = pS.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        closeConn(conn);
         return result == 1;
     }
 
-    public Boolean updateExistingCustomer(Customer customer) {
+    public Customer updateExistingCustomer(Customer customer) {
         Connection conn = getConn();
-        int result = 0;
         try {
-            PreparedStatement pS = conn.prepareStatement("UPDATE customer SET FirstName=?,LastName=?,Country=?,PostalCode=?,Phone=?,Email=? WHERE CustomerId ==?");
+            PreparedStatement pS = conn.prepareStatement("UPDATE Customer SET FirstName=?,LastName=?,Country=?,PostalCode=?,Phone=?,Email=? WHERE CustomerId ==?");
             setStatement(pS, customer);
-            result = pS.executeUpdate();
+            pS.setInt(7, customer.getCustomerId());
+            pS = conn.prepareStatement("SELECT CustomerId  ,FirstName,LastName,Country,PostalCode,Phone,Email FROM Customer WHERE CustomerId = ?");
+            pS.setInt(1, customer.getCustomerId());
+
+            ResultSet resultSet = pS.executeQuery();
+
+            return new Customer(resultSet.getInt(1),
+                    resultSet.getString(2), resultSet.getString(3),
+                    resultSet.getString(4), resultSet.getString(5),
+                    resultSet.getString(6), resultSet.getString(7));
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result == 1;
+        // TODO error hantering
+        closeConn(conn);
+        return null;
     }
 
     private void setStatement(PreparedStatement pS, Customer customer) throws SQLException {
@@ -49,8 +58,6 @@ public class CustomerDBHandler {
         pS.setString(4, customer.getPostCode());
         pS.setString(5, customer.getPhone());
         pS.setString(6, customer.getEmail());
-        pS.setInt(7, customer.getCustomerID());
-
     }
 
     public List<String> getNrCustomersByCountry() {
@@ -66,6 +73,7 @@ public class CustomerDBHandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConn(conn);
         return returnList;
     }
 
@@ -93,10 +101,10 @@ public class CustomerDBHandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConn(conn);
         return customerList;
 
     }
-
 
     /**
      * . For a given customer, their most popular genre (in the case of a tie, display both). Most popular in this context
@@ -108,13 +116,13 @@ public class CustomerDBHandler {
         Connection conn = getConn();
         try {
             PreparedStatement pS = conn.prepareStatement(
-                    "SELECT Customer.CustomerId  ,FirstName,LastName,Country,PostalCode,Phone,Email,G.Name\n" +
-                            "FROM Customer INNER JOIN Invoice I on Customer.CustomerId = I.CustomerId\n" +
-                            "              INNER JOIN InvoiceLine IL on I.InvoiceId = IL.InvoiceId\n" +
-                            "              INNER JOIN Track T on T.TrackId = IL.TrackId\n" +
+                    "SELECT Customer.CustomerId  ,FirstName,LastName,Country,PostalCode,Phone,Email,G.Name" +
+                            "FROM Customer INNER JOIN Invoice I on Customer.CustomerId = I.CustomerId" +
+                            "              INNER JOIN InvoiceLine IL on I.InvoiceId = IL.InvoiceId" +
+                            "              INNER JOIN Track T on T.TrackId = IL.TrackId" +
                             "              INNER JOIN Genre G on G.GenreId = T.GenreId " +
                             "WHERE Customer.CustomerId = ? GROUP BY G.GenreId ORDER BY COUNT(G.GenreId) DESC LIMIT 1");
-            pS.setInt(1,customerId);
+            pS.setInt(1, customerId);
             ResultSet resultSet = pS.executeQuery();
             while (resultSet.next()) {
                 return new CustomerGenre(
@@ -132,17 +140,28 @@ public class CustomerDBHandler {
             e.printStackTrace();
         }
         // TODO kanske bättre error hantering
+        closeConn(conn);
         return null;
     }
 
     private Connection getConn() {
         try {
+            String dbURL = "jdbc:sqlite:src\\main\\resources\\Chinook_Sqlite.sqlite";
             return DriverManager.getConnection(dbURL);
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(-1);
         }
         return null;
+    }
+
+    private void closeConn(Connection conn){
+        try {
+            conn.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+//            System.err.println("");
+        }
     }
 
 }
