@@ -3,6 +3,7 @@ package com.example.thymeleafsong.DBHandler;
 import com.example.thymeleafsong.BuissnesModels.Customer;
 import com.example.thymeleafsong.BuissnesModels.CustomerGenre;
 import com.example.thymeleafsong.BuissnesModels.CustomerSpender;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
@@ -13,9 +14,16 @@ import java.util.List;
 @Service
 public class CustomerService implements CustomerRepository {
 
+    private ConnectionManager connectionManager;
+    
+    public CustomerService(@Autowired ConnectionManager connectionManager){
+        this.connectionManager = connectionManager;
+    }
+    
+    
     @Override
     public List<Customer> getAllCustomers() {
-        Connection conn = getConn();
+        Connection conn = connectionManager.getConn();
         List<Customer> customers = new ArrayList<>();
 
         try {
@@ -38,7 +46,7 @@ public class CustomerService implements CustomerRepository {
 
     @Override
     public Customer getCustomer(int id) {
-        Connection conn = getConn();
+        Connection conn = connectionManager.getConn();
         Customer customer = new Customer();
         try {
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Customer WHERE Customer.CustomerID = ?");
@@ -60,7 +68,7 @@ public class CustomerService implements CustomerRepository {
 
     @Override
     public List<Customer> getCustomers(int limit, int offset) {
-        Connection conn = getConn();
+        Connection conn = connectionManager.getConn();
         List<Customer> customers = new ArrayList<>();
 
         try {
@@ -85,9 +93,8 @@ public class CustomerService implements CustomerRepository {
 
     @Override
     public Customer getCustomer(String firstName, String lastName) {
-        Connection conn = getConn();
+        Connection conn = connectionManager.getConn();
         Customer customer = new Customer();
-
         try {
             PreparedStatement stmt = conn.prepareStatement("SELECT CustomerId,FirstName,LastName,Country,PostalCode, Phone,Email FROM Customer WHERE FirstName LIKE ? OR  LastName LIKE ?");
 
@@ -122,7 +129,7 @@ public class CustomerService implements CustomerRepository {
 
     @Override
     public Boolean addNewCustomer(Customer customer) {
-        Connection conn = getConn();
+        Connection conn = connectionManager.getConn();
         int result = 0;
         try {
             PreparedStatement pS = conn.prepareStatement("INSERT INTO Customer (FirstName,LastName,Country,PostalCode,Phone,Email) VALUES (?,?,?,?,?,?)");
@@ -133,13 +140,13 @@ public class CustomerService implements CustomerRepository {
             e.printStackTrace();
         }
 
-        closeConn(conn);
+        connectionManager.closeConn(conn);
         return result == 1;
     }
 
     @Override
     public Customer updateExistingCustomer(Customer customer) {
-        Connection conn = getConn();
+        Connection conn = connectionManager.getConn();
         try {
             PreparedStatement pS = conn.prepareStatement("UPDATE Customer SET FirstName=?,LastName=?,Country=?,PostalCode=?,Phone=?,Email=? WHERE CustomerId =?");
             setStatement(pS, customer);
@@ -157,7 +164,7 @@ public class CustomerService implements CustomerRepository {
             e.printStackTrace();
         }
         // TODO error hantering
-        closeConn(conn);
+        connectionManager.closeConn(conn);
         return null;
     }
 
@@ -172,7 +179,7 @@ public class CustomerService implements CustomerRepository {
 
     @Override
     public List<String> getNrCustomersByCountry() {
-        Connection conn = getConn();
+        Connection conn = connectionManager.getConn();
         List<String> returnList = new ArrayList<>();
         try {
             PreparedStatement pS = conn.prepareStatement(
@@ -184,13 +191,13 @@ public class CustomerService implements CustomerRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        closeConn(conn);
+        connectionManager.closeConn(conn);
         return returnList;
     }
 
     @Override
     public List<CustomerSpender> getBiggestCustomersSpenders() {
-        Connection conn = getConn();
+        Connection conn = connectionManager.getConn();
         List<CustomerSpender> customerList = new ArrayList<>();
         try {
             PreparedStatement pS = conn.prepareStatement("SELECT Customer.CustomerId,FirstName,LastName,Country,PostalCode,Phone,Email,SUM(Total) as Total FROM Customer\n" +
@@ -213,7 +220,7 @@ public class CustomerService implements CustomerRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        closeConn(conn);
+        connectionManager.closeConn(conn);
         return customerList;
 
     }
@@ -226,7 +233,7 @@ public class CustomerService implements CustomerRepository {
      */
     @Override
     public CustomerGenre getCustomersFavoriteGenre(int customerId) {
-        Connection conn = getConn();
+        Connection conn = connectionManager.getConn();
         try {
             PreparedStatement pS = conn.prepareStatement(
                     "SELECT  Customer.CustomerId  ,FirstName,LastName,Country,PostalCode,Phone,Email,G.Name " +
@@ -253,28 +260,9 @@ public class CustomerService implements CustomerRepository {
             e.printStackTrace();
         }
         // TODO kanske bättre error hantering
-        closeConn(conn);
+        connectionManager.closeConn(conn);
         return null;
     }
-
-    private Connection getConn() {
-        try {
-            String dbURL = "jdbc:sqlite:src\\main\\resources\\Chinook_Sqlite.sqlite";
-            return DriverManager.getConnection(dbURL);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
-        return null;
-    }
-
-    private void closeConn(Connection conn) {
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-//            System.err.println("");
-        }
-    }
+    
 
 }
