@@ -84,7 +84,7 @@ public class CustomerService {
         Customer customer = new Customer();
 
         try {
-            PreparedStatement stmt = conn.prepareStatement("SELECT FirstName,LastName FROM Customer WHERE FirstName LIKE ? OR LastName LIKE ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT CustomerId,FirstName,LastName,Country,PostalCode, Phone,Email FROM Customer WHERE FirstName LIKE ? OR  LastName LIKE ?");
 
             stmt.setString(1, firstName + '%');
             stmt.setString(2, lastName + '%');
