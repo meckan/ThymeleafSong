@@ -5,6 +5,7 @@ import com.example.thymeleafsong.BuissnesModels.Customer;
 import com.example.thymeleafsong.BuissnesModels.CustomerGenre;
 import com.example.thymeleafsong.BuissnesModels.CustomerSpender;
 import com.example.thymeleafsong.DBHandler.CustomerRepository;
+import com.example.thymeleafsong.DBHandler.CustomerService;
 import com.example.thymeleafsong.DTO.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,35 @@ public class CustomerController {
     
     private final CustomerRepository repository;
     
-    public CustomerController(@Autowired CustomerRepository repository){
+    public CustomerController(@Autowired CustomerService repository){
         this.repository = repository;
     }
+
+
+    public List<CustomerDTO> getAllCustomers(){
+        List<CustomerDTO> dtoList = new ArrayList<>();
+        for (Customer customer : repository.getAllCustomers() ) {
+            dtoList.add(convertToDTO(customer));
+        }
+        return dtoList;
+    }
+
+    public CustomerDTO getCustomerById(int id){
+        return convertToDTO(repository.getCustomer(id));
+    }
+
+    public List<CustomerDTO> getCustomers(int limit, int offset){
+        List<CustomerDTO> dtoList = new ArrayList<>();
+        for (Customer customer: repository.getCustomers(limit,offset)) {
+            dtoList.add(convertToDTO(customer));
+        }
+        return dtoList;
+    }
+
+    public CustomerDTO getCustomerByName(String firstName, String lastName){
+        return convertToDTO(repository.getCustomer(firstName,lastName));
+    }
+
 
     public boolean addNewCustomer(CustomerDTO dto){
         return repository.addNewCustomer(convertToCustomer(dto));

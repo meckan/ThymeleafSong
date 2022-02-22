@@ -1,5 +1,6 @@
 package com.example.thymeleafsong.RestAPI;
 
+import com.example.thymeleafsong.BuissnesModels.Customer;
 import com.example.thymeleafsong.Controller.CustomerController;
 import com.example.thymeleafsong.DTO.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,26 @@ public class CustomerRestAPI {
 
     public CustomerRestAPI(@Autowired CustomerController controller){
         this.controller = controller;
+    }
+
+    @GetMapping("/customers")
+    public List<CustomerDTO> getAllCustomers(){
+        return controller.getAllCustomers();
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public CustomerDTO getCustomerById(@PathVariable int customerId){
+        return controller.getCustomerById(customerId);
+    }
+
+    @GetMapping("/customers/{offset}/{limit}")
+    public List<CustomerDTO> getCustomersByOffsetLimit(@PathVariable int offset,@PathVariable int limit){
+        return controller.getCustomers(limit,offset);
+    }
+
+    @GetMapping("/customer/{firstName}/{lastName}")
+    public CustomerDTO getCustomerByFirstLastName(@PathVariable String firstName,@PathVariable String lastName){
+        return controller.getCustomerByName(firstName,lastName);
     }
 
 
