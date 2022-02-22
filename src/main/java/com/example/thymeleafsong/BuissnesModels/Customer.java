@@ -1,7 +1,7 @@
 package com.example.thymeleafsong.BuissnesModels;
 
 public class Customer {
-    private int customerID;
+    private int customerId;
     private String firstName;
     private String lastName;
     private String country;
@@ -15,8 +15,8 @@ public class Customer {
 
 
 
-    public Customer(int customerID, String firstName, String lastName, String country, String postCode, String phone, String email) {
-        this.customerID = customerID;
+    public Customer(int customerId, String firstName, String lastName, String country, String postCode, String phone, String email) {
+        this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.country = country;
@@ -29,12 +29,12 @@ public class Customer {
     //region getterSetters
 
 
-    public int getCustomerID() {
-        return customerID;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     public String getFirstName() {
@@ -90,7 +90,7 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer{" +
-                "customerID='" + customerID + '\'' +
+                "customerID='" + customerId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", country='" + country + '\'' +

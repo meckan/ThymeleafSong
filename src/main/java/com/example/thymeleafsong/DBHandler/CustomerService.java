@@ -105,7 +105,7 @@ public class CustomerService {
 
     private Customer getDataFromCustomerResultSet(ResultSet resultSet) throws SQLException{
         Customer customer = new Customer();
-        customer.setCustomerID(resultSet.getInt("CustomerId"));
+        customer.setCustomerId(resultSet.getInt("CustomerId"));
         customer.setFirstName(resultSet.getString("FirstName"));
         customer.setLastName(resultSet.getString("LastName"));
         customer.setEmail(resultSet.getString("Email"));

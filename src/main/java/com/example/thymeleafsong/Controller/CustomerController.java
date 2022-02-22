@@ -51,7 +51,7 @@ public class CustomerController {
         dto.setCustomerId(customer.getCustomerId());
         dto.setFirstName(customer.getFirstName());
         dto.setLastName(customer.getLastName());
-        dto.setCounty(customer.getCounty());
+        dto.setCounty(customer.getCountry());
         dto.setPostCode(customer.getPostCode());
         dto.setEmail(customer.getEmail());
 
@@ -68,7 +68,7 @@ public class CustomerController {
         customer.setCustomerId(dto.getCustomerId());
         customer.setFirstName(dto.getFirstName());
         customer.setLastName(dto.getLastName());
-        customer.setCounty(dto.getCounty());
+        customer.setCountry(dto.getCounty());
         customer.setPostCode(dto.getPostCode());
         customer.setPhone(dto.getPhone());
         customer.setEmail(dto.getEmail());
