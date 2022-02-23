@@ -110,44 +110,4 @@ public class CustomerController {
         customer.setEmail(dto.getEmail());
         return customer;
     }
-
-    @GetMapping("/home")
-    public String getRandomMusicData(Model model){
-        CustomerService service = new CustomerService();
-        String randomSongs = "";
-        for(String song : service.getRandomSongs(5)){
-            randomSongs += song + ". ";
-        }
-
-        String randomArtists = "";
-        for(String artist : service.getRandomArtists(5)){
-            randomArtists += artist + ". ";
-        }
-
-        String randomGenres = "";
-        for(String genres : service.getRandomGenres(5)){
-            randomGenres += genres + ". ";
-        }
-
-        model.addAttribute("randomSongs",randomSongs);
-        model.addAttribute("randomArtists",randomArtists);
-        model.addAttribute("randomGenres",randomGenres);
-        return "home";
-    }
-
-    String song = "";
-    @PostMapping("result")
-    public String searchSong(@RequestParam("song") String song, Model model){
-
-        this.song = song;
-        model.addAttribute("song",song);
-        return "result";
-    }
-
-    @GetMapping("/result")
-    public String resultPage(Model model)
-    {
-        model.addAttribute("song", song);
-        return "result";
-    }
 }
