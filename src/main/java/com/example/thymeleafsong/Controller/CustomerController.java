@@ -4,9 +4,10 @@ package com.example.thymeleafsong.Controller;
 import com.example.thymeleafsong.BuissnesModels.Customer;
 import com.example.thymeleafsong.BuissnesModels.CustomerGenre;
 import com.example.thymeleafsong.BuissnesModels.CustomerSpender;
-import com.example.thymeleafsong.DBHandler.CustomerDBHandler;
+import com.example.thymeleafsong.DBHandler.CustomerRepository;
 import com.example.thymeleafsong.DBHandler.CustomerService;
 import com.example.thymeleafsong.DTO.CustomerDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,38 +20,68 @@ import java.util.List;
 
 @Controller
 public class CustomerController {
+    
+    private final CustomerRepository repository;
+    
+    public CustomerController(@Autowired CustomerService repository){
+        this.repository = repository;
+    }
 
+
+    public List<CustomerDTO> getAllCustomers(){
+        List<CustomerDTO> dtoList = new ArrayList<>();
+        for (Customer customer : repository.getAllCustomers() ) {
+            dtoList.add(convertToDTO(customer));
+        }
+        return dtoList;
+    }
+
+    public CustomerDTO getCustomerById(int id){
+        return convertToDTO(repository.getCustomer(id));
+    }
+
+    public List<CustomerDTO> getCustomers(int limit, int offset){
+        List<CustomerDTO> dtoList = new ArrayList<>();
+        for (Customer customer: repository.getCustomers(limit,offset)) {
+            dtoList.add(convertToDTO(customer));
+        }
+        return dtoList;
+    }
+
+    public CustomerDTO getCustomerByName(String firstName, String lastName){
+        return convertToDTO(repository.getCustomer(firstName,lastName));
+    }
 
 
     public boolean addNewCustomer(CustomerDTO dto){
-        CustomerDBHandler dbHandler = new CustomerDBHandler();
-        return dbHandler.addNewCustomer(convertToCustomer(dto));
+        return repository.addNewCustomer(convertToCustomer(dto));
     }
 
     public CustomerDTO updateCustomer(CustomerDTO dto){
-        CustomerDBHandler dbHandler = new CustomerDBHandler();
-        return convertToDTO(dbHandler.updateExistingCustomer(convertToCustomer(dto)));
+        return convertToDTO(repository.updateExistingCustomer(convertToCustomer(dto)));
     }
 
     public List<String> getNrCustomersByCountry(){
-        CustomerDBHandler dbHandler = new CustomerDBHandler();
-        return dbHandler.getNrCustomersByCountry();
+        return repository.getNrCustomersByCountry();
     }
 
     public CustomerDTO getCustomerFavGenre(int customerId) {
-        CustomerDBHandler dbHandler = new CustomerDBHandler();
-        return convertToDTO(dbHandler.getCustomersFavoriteGenre(customerId));
+
+        System.out.println(repository.getCustomersFavoriteGenre(customerId));
+
+        return convertToDTO(repository.getCustomersFavoriteGenre(customerId));
     }
 
     public List<CustomerDTO> getBiggestSpenders(){
-        CustomerDBHandler dbHandler = new CustomerDBHandler();
-        List<CustomerSpender> customerSpenderList = dbHandler.getBiggestCustomersSpenders();
+        List<CustomerSpender> customerSpenderList = repository.getBiggestCustomersSpenders();
         List<CustomerDTO> dtoList = new ArrayList<>();
         for (CustomerSpender spender: customerSpenderList) {
             dtoList.add(convertToDTO(spender));
         }
         return dtoList;
     }
+
+
 
     private CustomerDTO convertToDTO(Customer customer) {
         CustomerDTO dto = new CustomerDTO();
@@ -68,7 +99,6 @@ public class CustomerController {
 
         return dto;
     }
-
     private Customer convertToCustomer(CustomerDTO dto){
         Customer customer = new Customer();
         customer.setCustomerId(dto.getCustomerId());
