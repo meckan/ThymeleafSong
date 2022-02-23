@@ -10,6 +10,9 @@ import com.example.thymeleafsong.DTO.CustomerDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,9 +84,40 @@ public class CustomerController {
     @GetMapping("/home")
     public String getRandomMusicData(Model model){
         CustomerService service = new CustomerService();
-        model.addAttribute("randomSongs",service.getRandomSongs(5));
-        model.addAttribute("randomArtists",service.getRandomArtists(5));
-        model.addAttribute("randomGenres",service.getRandomGenres(5));
+        String randomSongs = "";
+        for(String song : service.getRandomSongs(5)){
+            randomSongs += song + ". ";
+        }
+
+        String randomArtists = "";
+        for(String artist : service.getRandomArtists(5)){
+            randomArtists += artist + ". ";
+        }
+
+        String randomGenres = "";
+        for(String genres : service.getRandomGenres(5)){
+            randomGenres += genres + ". ";
+        }
+
+        model.addAttribute("randomSongs",randomSongs);
+        model.addAttribute("randomArtists",randomArtists);
+        model.addAttribute("randomGenres",randomGenres);
         return "home";
+    }
+
+    String song = "";
+    @PostMapping("result")
+    public String searchSong(@RequestParam("song") String song, Model model){
+
+        this.song = song;
+        model.addAttribute("song",song);
+        return "result";
+    }
+
+    @GetMapping("/result")
+    public String resultPage(Model model)
+    {
+        model.addAttribute("song", song);
+        return "result";
     }
 }

@@ -5,8 +5,14 @@
     <title>Title</title>
 </head>
 <body>
-    <h1 th:text="${randomSongs}"></h1>
-    <h1 th:text="${randomArtists}"></h1>
-    <h1 th:text="${randomGenres}"></h1>
+<form action="#" th:action="@{/result}" th:object="${String}" method="post">
+    <input type="text"  />
+    <input type="submit" />
+</form>
+    <div >
+        <p th:text="'Random songs: ' + ${randomSongs}"></p>
+        <p th:text="'Random artists: ' + ${randomArtists}"></p>
+        <p th:text="'Random genres: ' + ${randomGenres}"></p>
+    </div>
 </body>
 </html>
