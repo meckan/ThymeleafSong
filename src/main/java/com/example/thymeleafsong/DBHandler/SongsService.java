@@ -103,8 +103,8 @@ public class SongsService implements SongsRepository{
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()){
                 songCollection.add(new Song(
-                        resultSet.getNString(1),
-                        resultSet.getNString(2),
+                        resultSet.getString(1),
+                        resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getString(4)
                 ));

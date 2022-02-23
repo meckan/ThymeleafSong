@@ -5,6 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-    <h1 th:text="${song}"></h1>
+<table>
+    <tr th:each="song: ${songs}">
+        <td th:text="${song.name}"/>
+        <td th:text="${song.artistName}"/>
+        <td th:text="${song.albumTitle}"/>
+        <td th:text="${song.genre}"/>
+    </tr>
+</table>
 </body>
 </html>

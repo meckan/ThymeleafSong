@@ -5,10 +5,16 @@
     <title>Title</title>
 </head>
 <body>
-<form action="#" th:action="@{/result}" th:object="${String}" method="post">
-    <input type="text"  />
+<!--<form action="#" th:action="@{/result}" th:object="${String}" method="post">-->
+<!--    <input type="text"  />-->
+<!--    <input type="submit" />-->
+<!--</form>-->
+
+<form th:action="@{/result?sourceText=${sourceText}}"  method="get">
+    <input type="text" th:value="${sourceText}" name="sourceText"/>
     <input type="submit" />
 </form>
+
     <div >
         <p th:text="'Random songs: ' + ${randomSongs}"></p>
         <p th:text="'Random artists: ' + ${randomArtists}"></p>

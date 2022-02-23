@@ -1,5 +1,6 @@
 package com.example.thymeleafsong.Controller;
 
+import com.example.thymeleafsong.BuissnesModels.Song;
 import com.example.thymeleafsong.DBHandler.ArtistService;
 import com.example.thymeleafsong.DBHandler.GenreService;
 import com.example.thymeleafsong.DBHandler.SongsService;
@@ -7,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Collection;
 
 @Controller
 public class HomePageController {
@@ -49,4 +55,12 @@ public class HomePageController {
 
         return "home";
     }
+
+
+    @GetMapping("/result")
+    public String getSongsByTitle(@RequestParam("sourceText") String sourceText, Model model) {
+        model.addAttribute("songs", songsService.getSongByTitle(sourceText));
+        return "result";
+    }
+
 }
