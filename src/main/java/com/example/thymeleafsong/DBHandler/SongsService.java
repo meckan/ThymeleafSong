@@ -1,12 +1,14 @@
 package com.example.thymeleafsong.DBHandler;
 
 import com.example.thymeleafsong.BuissnesModels.Song;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
-
-public class SongsService {
+@Service
+public class SongsService implements SongsRepository{
 
     private final ConnectionManager connectionManager;
 
@@ -14,6 +16,7 @@ public class SongsService {
         this.connectionManager = connectionManager;
     }
 
+    @Override
     public Collection<String> getRandomSongs(int amount){
         Connection conn = connectionManager.getConn();
         Collection<String> songs = new ArrayList();
@@ -113,15 +116,4 @@ public class SongsService {
         return null;
     }
 
-
-
-//    private Connection getConn() {
-//        try {
-//            return DriverManager.getConnection(dbURL);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            System.exit(-1);
-//        }
-//        return null;
-//    }
 }

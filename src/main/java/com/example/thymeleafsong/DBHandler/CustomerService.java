@@ -16,12 +16,12 @@ import java.util.List;
 public class CustomerService implements CustomerRepository {
 
     private ConnectionManager connectionManager;
-    
-    public CustomerService(@Autowired ConnectionManager connectionManager){
+
+    public CustomerService(@Autowired ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
-    
-    
+
+
     @Override
     public List<Customer> getAllCustomers() {
         Connection conn = connectionManager.getConn();
@@ -236,7 +236,6 @@ public class CustomerService implements CustomerRepository {
     public CustomerGenre getCustomersFavoriteGenre(int customerId) {
         Connection conn = connectionManager.getConn();
         try {
-            // TODO work on how to get tie results
             PreparedStatement pS = conn.prepareStatement(
                     "SELECT  Customer.CustomerId  ,FirstName,LastName,Country,PostalCode,Phone,Email,G.Name " +
                             "FROM Customer INNER JOIN Invoice I on Customer.CustomerId = I.CustomerId " +
@@ -265,6 +264,6 @@ public class CustomerService implements CustomerRepository {
         connectionManager.closeConn(conn);
         return null;
     }
-    
+
 
 }
