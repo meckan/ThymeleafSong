@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
-
+/**
+ * The service that fetches the random genres from the database.
+ */
 @Service
 public class GenreService implements GenreRepository {
 

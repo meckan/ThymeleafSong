@@ -6,9 +6,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * A service that opens a connection against the database and closes it.
+ */
 @Service
 public class ConnectionManager {
 
+    /**
+     * Open connection to database.
+     * @return
+     */
     public Connection getConn() {
         try {
             String dbURL = "jdbc:sqlite:src\\main\\resources\\Chinook_Sqlite.sqlite";
@@ -20,6 +27,10 @@ public class ConnectionManager {
         return null;
     }
 
+    /**
+     * Closes connection to database.
+     * @param conn
+     */
     public void closeConn(Connection conn) {
         try {
             conn.close();

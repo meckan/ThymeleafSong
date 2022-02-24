@@ -1,5 +1,8 @@
 package com.example.thymeleafsong.DTO;
 
+/**
+ * The Data Transfer Object for a Customer
+ */
 public class CustomerDTO {
 
     private int customerId;

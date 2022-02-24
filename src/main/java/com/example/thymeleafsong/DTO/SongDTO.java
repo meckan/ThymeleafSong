@@ -1,5 +1,8 @@
 package com.example.thymeleafsong.DTO;
 
+/**
+ * The Data Transfer Object for the Song.
+ */
 public class SongDTO {
 
     private String name;

@@ -9,15 +9,14 @@ import com.example.thymeleafsong.DBHandler.CustomerService;
 import com.example.thymeleafsong.DTO.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller that has the CustomerRepository as a dependency.
+ * Interacts with CustomerRepository to fetch and insert data from and to the database.
+ */
 @Controller
 public class CustomerController {
     
@@ -82,7 +81,11 @@ public class CustomerController {
     }
 
 
-
+    /**
+     * Creates a Data Transfer Object out of the customer that is retrieved from the database.
+     * @param customer Customer that is retrieved from database.
+     * @return Customer Data Transfer Object
+     */
     private CustomerDTO convertToDTO(Customer customer) {
         CustomerDTO dto = new CustomerDTO();
         dto.setCustomerId(customer.getCustomerId());
@@ -99,6 +102,11 @@ public class CustomerController {
 
         return dto;
     }
+    /**
+     * Creates a Customer out of the Data Transfer Object.
+     * @param dto The Customer Data Transfer Object
+     * @return Customer object that is created from the Data Transfer Object.
+     */
     private Customer convertToCustomer(CustomerDTO dto){
         Customer customer = new Customer();
         customer.setCustomerId(dto.getCustomerId());

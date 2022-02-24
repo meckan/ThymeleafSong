@@ -10,6 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * The service that fetches the random artists from the database.
+ */
 @Service
 public class ArtistService implements ArtistRepository{
 

@@ -6,12 +6,16 @@ import com.example.thymeleafsong.BuissnesModels.CustomerSpender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-
+/**
+ * Service that handles all the customer related queries that is needed for the rest api.
+ */
 @Service
 public class CustomerService implements CustomerRepository {
 
@@ -21,7 +25,10 @@ public class CustomerService implements CustomerRepository {
         this.connectionManager = connectionManager;
     }
 
-
+    /**
+     * Queries for all the customers
+     * @return
+     */
     @Override
     public List<Customer> getAllCustomers() {
         Connection conn = connectionManager.getConn();
@@ -45,6 +52,11 @@ public class CustomerService implements CustomerRepository {
         }
     }
 
+    /**
+     * Queries for customer by id
+     * @return
+     */
+
     @Override
     public Customer getCustomer(int id) {
         Connection conn = connectionManager.getConn();
@@ -66,6 +78,11 @@ public class CustomerService implements CustomerRepository {
             return customer;
         }
     }
+
+    /**
+     * Queries and returns customers by a given limit and offset.
+     * @return
+     */
 
     @Override
     public List<Customer> getCustomers(int limit, int offset) {
@@ -92,6 +109,12 @@ public class CustomerService implements CustomerRepository {
         }
     }
 
+    /**
+     * Queries for customers by matching of first and last name.
+     * @param firstName
+     * @param lastName
+     * @return
+     */
     @Override
     public Customer getCustomer(String firstName, String lastName) {
         Connection conn = connectionManager.getConn();
@@ -128,6 +151,11 @@ public class CustomerService implements CustomerRepository {
         return customer;
     }
 
+    /**
+     * Adds the given customer to the database.
+     * @param customer
+     * @return
+     */
     @Override
     public Boolean addNewCustomer(Customer customer) {
         Connection conn = connectionManager.getConn();
@@ -145,6 +173,11 @@ public class CustomerService implements CustomerRepository {
         return result == 1;
     }
 
+    /**
+     * Updates a customers data.
+     * @param customer
+     * @return
+     */
     @Override
     public Customer updateExistingCustomer(Customer customer) {
         Connection conn = connectionManager.getConn();
@@ -178,6 +211,10 @@ public class CustomerService implements CustomerRepository {
         pS.setString(6, customer.getEmail());
     }
 
+    /**
+     * Queries for how many customers there are in respective countries.
+     * @return
+     */
     @Override
     public List<String> getNrCustomersByCountry() {
         Connection conn = connectionManager.getConn();
@@ -196,6 +233,10 @@ public class CustomerService implements CustomerRepository {
         return returnList;
     }
 
+    /**
+     * Queries for the customers that spends most money according to their invoicing
+     * @return
+     */
     @Override
     public List<CustomerSpender> getBiggestCustomersSpenders() {
         Connection conn = connectionManager.getConn();
