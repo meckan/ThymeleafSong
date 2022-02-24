@@ -21,9 +21,9 @@ public interface CustomerRepository {
 
     Customer getCustomer(String firstName, String lastName);
 
-    Boolean addNewCustomer(Customer customer);
+    boolean addNewCustomer(Customer customer);
 
-    Customer updateExistingCustomer(Customer customer);
+    Customer updateExistingCustomer(int customerId,Customer customer);
 
     List<String> getNrCustomersByCountry();
 

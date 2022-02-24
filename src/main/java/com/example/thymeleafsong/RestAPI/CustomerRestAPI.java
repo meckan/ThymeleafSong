@@ -12,15 +12,6 @@ import java.util.List;
 @RequestMapping("/customer")
 public class CustomerRestAPI {
 
-    /*
-    5. Add a new customer to the database. You also need to add only the fields listed above (our customer object)
-    6. Update an existing customer.
-    7. Return the number of customers in each country, ordered descending (high to low). i.e. USA: 13, …
-    8. Customers who are the highest spenders (total in invoice table is the largest), ordered descending.
-    9. For a given customer, their most popular genre (in the case of a tie, display both). Most popular in this context
-       means the genre that corresponds to the most tracks from invoices associated to that customer.
-     */
-
     private final CustomerController controller;
 
     public CustomerRestAPI(@Autowired CustomerController controller){
@@ -53,9 +44,9 @@ public class CustomerRestAPI {
         return controller.addNewCustomer(dto);
     }
 
-    @PutMapping("/updateCustomer")
-    private CustomerDTO updateCustomer(@RequestBody CustomerDTO dto) {
-        return  controller.updateCustomer(dto);
+    @PutMapping("/updateCustomer/{customerId}")
+    private CustomerDTO updateCustomer(@RequestBody CustomerDTO dto,@PathVariable int customerId) {
+        return  controller.updateCustomer(customerId,dto);
     }
 
     @GetMapping("/getCustomerByContry")

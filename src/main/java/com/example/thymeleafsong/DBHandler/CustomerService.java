@@ -129,7 +129,7 @@ public class CustomerService implements CustomerRepository {
     }
 
     @Override
-    public Boolean addNewCustomer(Customer customer) {
+    public boolean addNewCustomer(Customer customer) {
         Connection conn = connectionManager.getConn();
         int result = 0;
         try {
@@ -146,27 +146,28 @@ public class CustomerService implements CustomerRepository {
     }
 
     @Override
-    public Customer updateExistingCustomer(Customer customer) {
+    public Customer updateExistingCustomer(int customerId,Customer customer) {
         Connection conn = connectionManager.getConn();
+        Customer updatedCustomer = null;
         try {
             PreparedStatement pS = conn.prepareStatement("UPDATE Customer SET FirstName=?,LastName=?,Country=?,PostalCode=?,Phone=?,Email=? WHERE CustomerId =?");
             setStatement(pS, customer);
-            pS.setInt(7, customer.getCustomerId());
+            pS.setInt(7, customerId);
             pS.executeUpdate();
             pS = conn.prepareStatement("SELECT CustomerId  ,FirstName,LastName,Country,PostalCode,Phone,Email FROM Customer WHERE CustomerId = ?");
-            pS.setInt(1, customer.getCustomerId());
+            pS.setInt(1, customerId);
             ResultSet resultSet = pS.executeQuery();
-            return new Customer(resultSet.getInt(1),
+            updatedCustomer =  new Customer(resultSet.getInt(1),
                     resultSet.getString(2), resultSet.getString(3),
                     resultSet.getString(4), resultSet.getString(5),
                     resultSet.getString(6), resultSet.getString(7));
-
+            resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         // TODO error hantering
         connectionManager.closeConn(conn);
-        return null;
+        return updatedCustomer;
     }
 
     private void setStatement(PreparedStatement pS, Customer customer) throws SQLException {
@@ -237,26 +238,53 @@ public class CustomerService implements CustomerRepository {
         Connection conn = connectionManager.getConn();
         try {
             PreparedStatement pS = conn.prepareStatement(
-                    "SELECT  Customer.CustomerId  ,FirstName,LastName,Country,PostalCode,Phone,Email,G.Name " +
-                            "FROM Customer INNER JOIN Invoice I on Customer.CustomerId = I.CustomerId " +
-                            "INNER JOIN InvoiceLine IL on I.InvoiceId = IL.InvoiceId " +
-                            "INNER JOIN Track T on T.TrackId = IL.TrackId " +
-                            "INNER JOIN Genre G on G.GenreId = T.GenreId " +
-                            "WHERE Customer.CustomerId = ? GROUP BY G.GenreId ORDER BY COUNT(G.GenreId) DESC LIMIT 1");
+                    """
+                            SELECT CustomerId  ,FirstName,LastName,Country,PostalCode,Phone,Email,Name
+                            from (SELECT count(*) as total,
+                                         Customer.CustomerId,
+                                         FirstName,
+                                         LastName,
+                                         Country,
+                                         PostalCode,
+                                         Phone,
+                                         Email,
+                                         G.Name
+                                  FROM Customer
+                                           inner join Invoice I on Customer.CustomerId = I.CustomerId
+                                           inner join InvoiceLine IL on I.InvoiceId = IL.InvoiceId
+                                           inner join Track T on T.TrackId = IL.TrackId
+                                           inner join Genre G on G.GenreId = T.GenreId
+                                  where I.CustomerId = ?
+                                  GROUP BY G.Name
+                                 )
+                            WHERE total = (SELECT MAX(total)
+                                           from (SELECT count(*) as total
+                                                 FROM Customer
+                                                          inner join Invoice I on Customer.CustomerId = I.CustomerId
+                                                          inner join InvoiceLine IL on I.InvoiceId = IL.InvoiceId
+                                                          inner join Track T on T.TrackId = IL.TrackId
+                                                          inner join Genre G on G.GenreId = T.GenreId
+                                                 where I.CustomerId = ?
+                                                 GROUP BY G.Name));""");
             pS.setInt(1, customerId);
+            pS.setInt(2,customerId);
             ResultSet resultSet = pS.executeQuery();
+            CustomerGenre customerGenre = new CustomerGenre();
+            List<String> genreList = new ArrayList<>();
+
             while (resultSet.next()) {
-                return new CustomerGenre(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4),
-                        resultSet.getString(5),
-                        resultSet.getString(6),
-                        resultSet.getString(7),
-                        resultSet.getString(8)
-                );
+                customerGenre.setCustomerId(resultSet.getInt(1));
+                customerGenre.setFirstName(resultSet.getString(2));
+                customerGenre.setLastName(resultSet.getString(3));
+                customerGenre.setCountry(resultSet.getString(4));
+                customerGenre.setPostCode(resultSet.getString(5));
+                customerGenre.setPhone(resultSet.getString(6));
+                customerGenre.setEmail(resultSet.getString(7));
+                genreList.add(resultSet.getString(8));
+
             }
+            customerGenre.setFavoriteGenre(genreList);
+            return customerGenre;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -264,6 +292,5 @@ public class CustomerService implements CustomerRepository {
         connectionManager.closeConn(conn);
         return null;
     }
-
 
 }
