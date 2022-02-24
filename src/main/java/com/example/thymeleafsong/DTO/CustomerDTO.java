@@ -1,4 +1,5 @@
 package com.example.thymeleafsong.DTO;
+import java.util.List;
 
 /**
  * The Data Transfer Object for a Customer
@@ -13,14 +14,14 @@ public class CustomerDTO {
     private String phone;
     private String email;
 
-    private String favoriteGenre;
+    private List<String> favoriteGenre;
 
     private double Total;
 
     public CustomerDTO() {
     }
 
-    public CustomerDTO(int customerId, String firstName, String lastName, String county, String postCode, String phone, String email, String favoriteGenre, double total) {
+    public CustomerDTO(int customerId, String firstName, String lastName, String county, String postCode, String phone, String email, List<String> favoriteGenre, double total) {
         this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -90,11 +91,11 @@ public class CustomerDTO {
         this.email = email;
     }
 
-    public String getFavoriteGenre() {
+    public List<String> getFavoriteGenre() {
         return favoriteGenre;
     }
 
-    public void setFavoriteGenre(String favoriteGenre) {
+    public void setFavoriteGenre(List<String> favoriteGenre) {
         this.favoriteGenre = favoriteGenre;
     }
 

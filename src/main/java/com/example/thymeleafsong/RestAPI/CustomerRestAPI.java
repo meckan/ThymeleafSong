@@ -43,9 +43,9 @@ public class CustomerRestAPI {
         return controller.addNewCustomer(dto);
     }
 
-    @PutMapping("/updateCustomer")
-    private CustomerDTO updateCustomer(@RequestBody CustomerDTO dto) {
-        return  controller.updateCustomer(dto);
+    @PutMapping("/updateCustomer/{customerId}")
+    private CustomerDTO updateCustomer(@RequestBody CustomerDTO dto,@PathVariable int customerId) {
+        return  controller.updateCustomer(customerId,dto);
     }
 
     @GetMapping("/getCustomerByContry")

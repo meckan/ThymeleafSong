@@ -56,8 +56,8 @@ public class CustomerController {
         return repository.addNewCustomer(convertToCustomer(dto));
     }
 
-    public CustomerDTO updateCustomer(CustomerDTO dto){
-        return convertToDTO(repository.updateExistingCustomer(convertToCustomer(dto)));
+    public CustomerDTO updateCustomer(int customerId,CustomerDTO dto){
+        return convertToDTO(repository.updateExistingCustomer(customerId,convertToCustomer(dto)));
     }
 
     public List<String> getNrCustomersByCountry(){
@@ -65,9 +65,6 @@ public class CustomerController {
     }
 
     public CustomerDTO getCustomerFavGenre(int customerId) {
-
-        System.out.println(repository.getCustomersFavoriteGenre(customerId));
-
         return convertToDTO(repository.getCustomersFavoriteGenre(customerId));
     }
 
@@ -95,8 +92,13 @@ public class CustomerController {
         dto.setPostCode(customer.getPostCode());
         dto.setEmail(customer.getEmail());
 
-        if (customer instanceof CustomerGenre)
-            dto.setFavoriteGenre(((CustomerGenre) customer).getFavoriteGenre());
+        if (customer instanceof CustomerGenre){
+            List<String> genreList = new ArrayList<>();
+            for (String genre: ((CustomerGenre) customer).getFavoriteGenre()) {
+                genreList.add(genre);
+            }
+            dto.setFavoriteGenre(genreList);
+        }
         if(customer instanceof CustomerSpender)
             dto.setTotal(((CustomerSpender) customer).getTotal());
 

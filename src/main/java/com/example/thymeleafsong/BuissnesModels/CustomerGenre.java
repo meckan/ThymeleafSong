@@ -1,23 +1,28 @@
 package com.example.thymeleafsong.BuissnesModels;
 
+import java.util.List;
+
 public class CustomerGenre extends Customer {
 
-    private String favoriteGenre;
+    private List<String> favoriteGenre;
 
 
-    public CustomerGenre(int customerID, String firstName, String lastName, String county, String postCode, String phone, String email, String favoriteGenre) {
-        super(customerID, firstName, lastName, county, postCode, phone, email);
+    public CustomerGenre() {
+    }
+
+    public CustomerGenre(int customerId, String firstName, String lastName, String country, String postCode, String phone, String email, List<String> favoriteGenre) {
+        super(customerId, firstName, lastName, country, postCode, phone, email);
         this.favoriteGenre = favoriteGenre;
     }
 
-    public String getFavoriteGenre() {
+
+    public List<String> getFavoriteGenre() {
         return favoriteGenre;
     }
 
-    public void setFavoriteGenre(String favoriteGenre) {
+    public void setFavoriteGenre(List<String> favoriteGenre) {
         this.favoriteGenre = favoriteGenre;
     }
-
 
     @Override
     public String toString() {
