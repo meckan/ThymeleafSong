@@ -1,5 +1,6 @@
 package com.example.thymeleafsong.DBHandler;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -18,7 +19,9 @@ public class ConnectionManager {
      */
     public Connection getConn() {
         try {
-            String dbURL = "jdbc:sqlite:src\\main\\resources\\Chinook_Sqlite.sqlite";
+            //String dbURL = "jdbc:sqlite:src\\main\\resources\\Chinook_Sqlite.sqlite";
+            String dbURL = "jdbc:sqlite::resource:Chinook_Sqlite.sqlite";
+
             return DriverManager.getConnection(dbURL);
         } catch (SQLException e) {
             e.printStackTrace();
