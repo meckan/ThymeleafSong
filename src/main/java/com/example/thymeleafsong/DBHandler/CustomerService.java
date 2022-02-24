@@ -329,7 +329,7 @@ public class CustomerService implements CustomerRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        // TODO kanske bättre error hantering
+        // TODO Maybe implement better error handling
         connectionManager.closeConn(conn);
         return null;
     }
