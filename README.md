@@ -1,64 +1,53 @@
 
-src = https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc
-# Project Title
+# ThymeleafSong
 
-Simple overview of use/purpose.
+Second Java assignment from Noroff winter 2022. Task is to lern how to work with Java / Spring
+and to use it with basic SQL commands. Also with Thymeleaf create a simpel frontend to show users
+
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+Task is to create a Rest api to be able to make operations on the Chinook_Sqlite.sqlite database
+and view it in json by either Postman or browser.
+
+Secondary task is to create a frontend in Thymeleaf to give users the ability to search songs by 
+title and show 5 random songs, artist and genres.
+
+As a ending requirement in this assignemnt is to create a Docker image of the application and push 
+to Heroku. 
 
 ## Getting Started
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+* JDK (to project in IDE)
+* Java IDE (IntelliJ or any other modern Java IDE)
+
+* Postman https://www.postman.com/
 
 ### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+* Clone project
+* Open project in IDE and build
+
+
+API test
+* Open Postman 
+* Under Collections import and enter https://www.getpostman.com/collections/86c63dab44b4c64e78d1
+* Double click folder and choose what base url to use
+* Run Collection by hitting Run in folder or hit ... at end of Collection name and hit Run collection
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
-```
-code blocks for commands
-```
+* In ide run project
+* Navigate to http://localhost:5000/home
 
-## Help
+Or 
 
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+* Navigate to https://thymeleaf-song.herokuapp.com/home
 
 ## Authors
 
-Contributors names and contact info
+Gustav Eklund Kavtaradze [@meckan]
 
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
-
-## Version History
-
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
-
-## License
-
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
-
-## Acknowledgments
-
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+Love Beling [@mikaellove]
